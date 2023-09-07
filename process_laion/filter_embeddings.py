@@ -3,7 +3,7 @@ import numpy as np
 # Provide path to LAION metadata here and create captions.txt to write all captions
 path = 'deploy.laion.ai/8f83b608504d46bb81708ec86e912220/embeddings'
 
-unique_indices = np.load('unique_indices.npy')
+unique_indices = np.load('laion_unique_indices.npy')
 
 new_size = 0
 size = 0

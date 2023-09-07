@@ -25,4 +25,4 @@ with open(f'{path}/metadata/captions.txt', 'a') as f:
         offset += len(batch_captions)
         
 print('Number of unique captions:', len(unique_indices))
-np.save('unique_indices.npy', np.array(unique_indices))
+np.save('laion_unique_indices.npy', np.array(unique_indices))
