@@ -1,6 +1,6 @@
 # falcon-explain
 
-# Identifying Interpretable Subspaces of Image Representations #
+# Identifying Interpretable Subspaces in Image Representations #
 This is the official PyTorch implementation of the FALCON framework in our [ICML 2023 paper](https://arxiv.org/abs/2307.10504). 
 
 ## Step 1: Download and process vocabulary ##
