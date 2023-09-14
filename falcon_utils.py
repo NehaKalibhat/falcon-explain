@@ -195,8 +195,8 @@ def caption_images(image_emb, caption_dataloader, caption_dataset):
     
 def clean_text(text):
     text = text.lower()
-    text = re.sub(''', '', text)
-    text = re.sub('[^A-Za-z0-9 \n']+', ' ', text)
+    text = re.sub("'", '', text)
+    text = re.sub("[^A-Za-z0-9 \n']+", ' ', text)
     text = re.sub('fig\d+', ' ', text)
     text = re.sub(' . ', ' ', text)
     text = ' '.join([t for t in text.split(' ') if t not in _DISCARD_WORDS])
