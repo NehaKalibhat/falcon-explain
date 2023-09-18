@@ -32,29 +32,23 @@ def main():
     f = open(f'{args.exp_name}/int_feature_groups.pkl','rb')
     feature_groups = pickle.load(f)
     f.close()
-    
-    transform = transforms.Compose([
-        transforms.Resize(256),
-        transforms.CenterCrop(224),
-        transforms.ToTensor(),
-        transforms.Normalize(mean=(0.485, 0.456, 0.406), std=(0.228, 0.224, 0.225))
-    ])
-    
-    # Get image and caption datasets
-    image_dataset = ImageFolder(args.probe_dataset, transform)
-    caption_dataset = falcon_utils.LAION(root = 'deploy.laion.ai/8f83b608504d46bb81708ec86e912220/embeddings', transform = transforms.ToTensor())
-    caption_dataloader = DataLoader(caption_dataset, 
-                                    batch_size = 1, 
-                                    shuffle = False, 
-                                    num_workers = 16,
-                                    pin_memory = True)
 
     # Threshold for lowly activating samples
     lim = 5
     low_thresh = encoder_representations.mean()
     
     # Get CLIP model
-    clip_model, _ = clip.load('ViT-B/32', device='cuda')
+    clip_model, clip_transform = clip.load('ViT-B/32', device='cuda')
+    
+    # Get image and caption datasets
+    image_dataset = ImageFolder(args.probe_dataset, clip_transform)
+    caption_dataset = falcon_utils.LAION(root = 'deploy.laion.ai/8f83b608504d46bb81708ec86e912220/embeddings', transform = transforms.ToTensor())
+    caption_dataloader = DataLoader(caption_dataset, 
+                                    batch_size = 1, 
+                                    shuffle = False, 
+                                    num_workers = 16,
+                                    pin_memory = True)
+    
     inv_norm_transform = transforms.Compose([
         transforms.Normalize(mean = [ 0., 0., 0. ],
                              std = [ 1/0.228, 1/0.224, 1/0.225 ]),

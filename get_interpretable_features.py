@@ -126,7 +126,8 @@ def main():
                   target_layers = encoder.layer4, # change target_layers according to the layer we wish to explain
                   use_cuda = True) 
     
-    clip_model, _ = clip.load('ViT-B/32', device='cuda')
+    clip_model, clip_transform = clip.load('ViT-B/32', device='cuda')
+    image_dataset_for_clip = ImageFolder(args.probe_dataset, clip_transform)
     resize_transform = transforms.Compose([transforms.Resize((224, 224))])
     inv_norm_transform = transforms.Compose([
         transforms.Normalize(mean = [ 0., 0., 0. ],
@@ -147,7 +148,7 @@ def main():
         highly_idx = torch.LongTensor(groups[feat_str])
 
         highly_act_images, highly_act_clip_features, highly_act_cropped_images = falcon_utils.get_clip_image_features(clip_model = clip_model,
-                                                                                                                      probe_dataset = dataset,
+                                                                                                                      probe_dataset = image_dataset_for_clip,
                                                                                                                       sample_indices = highly_idx,
                                                                                                                       batch_size = batch_size,
                                                                                                                       target_feature_group = feats,
